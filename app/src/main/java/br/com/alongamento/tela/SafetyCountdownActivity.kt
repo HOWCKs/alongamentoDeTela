@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import br.com.alongamento.tela.data.AppPrefs
 import br.com.alongamento.tela.display.DisplayController
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.CoroutineScope
@@ -18,7 +17,7 @@ class SafetyCountdownActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_safety)
-        val seconds = intent.getIntExtra("seconds", AppPrefs.safetySeconds).coerceIn(5, 30)
+        val seconds = intent.getIntExtra("seconds", 12).coerceIn(5, 30)
         val label = findViewById<TextView>(R.id.txtCountdown)
         findViewById<MaterialButton>(R.id.btnKeep).setOnClickListener {
             kept = true
