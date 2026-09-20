@@ -57,7 +57,15 @@ jobs:
         if: failure()
         run: |
           echo '## Gradle' >> "$GITHUB_STEP_SUMMARY"
-          tail -n 120 gradle-build.log | tee -a "$GITHUB_STEP_SUMMARY"
+          tail -n 160 gradle-build.log | tee -a "$GITHUB_STEP_SUMMARY"
+          python3 - <<'PY'
+          import pathlib
+          text = pathlib.Path("gradle-build.log").read_text(errors="replace")
+          keys = ("e: ", "error:", "FAILED", "What went wrong", "Unresolved", "AAPT")
+          lines = [ln for ln in text.splitlines() if any(k in ln for k in keys)]
+          for ln in lines[-40:]:
+              print(f"::error::{ln[:200]}")
+          PY
 
       - name: Conferir APK
         run: |
