@@ -17,7 +17,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/bg2"
-        app:itemIconTint="@color/neon"
-        app:itemTextColor="@color/text"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        app:itemIconSize="26dp"
+        app:itemIconTint="@color/nav_item"
+        app:itemTextColor="@color/nav_item"
+        app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav" />
 </LinearLayout>

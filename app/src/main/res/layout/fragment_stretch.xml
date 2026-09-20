@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/app_name"
+            android:text="@string/home_title"
             android:textColor="@color/neon"
             android:textSize="26sp"
             android:textStyle="bold" />
@@ -24,124 +24,173 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="@string/hero"
+            android:text="@string/hero_v2"
             android:textColor="@color/muted" />
+
+        <TextView
+            android:id="@+id/txtStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/bg_card"
+            android:padding="14dp"
+            android:textColor="@color/cyan"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/bg_card"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_marginTop="14dp"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/txtStatus"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/cyan"
-                android:textStyle="bold" />
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_card"
+                android:gravity="center"
+                android:minHeight="96dp"
+                android:orientation="vertical"
+                android:padding="14dp">
 
-            <TextView
-                android:id="@+id/txtSize"
-                android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_native"
+                    android:textAllCaps="true"
+                    android:textColor="@color/muted"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/txtNative"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:textColor="@color/text"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:textColor="@color/text" />
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_card"
+                android:gravity="center"
+                android:minHeight="96dp"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_proj"
+                    android:textAllCaps="true"
+                    android:textColor="@color/muted"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/txtProj"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:textColor="@color/cyan"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:text="Proporção (calculada neste celular)"
-            android:textColor="@color/muted"
-            android:textAllCaps="true"
-            android:textSize="12sp" />
-
-        <HorizontalScrollView
+            android:id="@+id/txtMult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:scrollbars="none">
+            android:gravity="center"
+            android:textColor="@color/text"
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/chipPresets"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:singleSelection="true" />
-        </HorizontalScrollView>
+        <com.google.android.material.slider.Slider
+            android:id="@+id/sliderMult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:haloColor="@color/neon"
+            app:thumbTint="@color/neon"
+            app:trackActiveTint="@color/neon" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:orientation="horizontal">
 
-            <com.google.android.material.textfield.TextInputLayout
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnModeAlongar"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="56dp"
+                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
-                android:hint="@string/width"
-                android:layout_marginEnd="6dp">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtW"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:text="@string/mode_alongar"
+                app:cornerRadius="16dp"
+                app:icon="@drawable/ic_stretch"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp" />
 
-            <com.google.android.material.textfield.TextInputLayout
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnModeCorte"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="56dp"
+                android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:hint="@string/height"
-                android:layout_marginHorizontal="6dp">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtH"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="@string/dpi"
-                android:layout_marginStart="6dp">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtDpi"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:text="@string/mode_corte"
+                app:cornerRadius="16dp"
+                app:icon="@drawable/ic_crop"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp" />
         </LinearLayout>
 
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/swAutoDpi"
+        <TextView
+            android:id="@+id/txtModeHint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/auto_dpi"
+            android:textColor="@color/muted"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/txtGame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:background="@drawable/bg_card"
+            android:minHeight="56dp"
+            android:padding="14dp"
             android:textColor="@color/text" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnApply"
+            android:id="@+id/btnPlay"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="60dp"
             android:layout_marginTop="16dp"
-            android:text="@string/apply"
-            app:cornerRadius="16dp" />
+            android:text="@string/open_with_overlay"
+            app:cornerRadius="18dp"
+            app:icon="@drawable/ic_play"
+            app:iconGravity="textStart"
+            app:iconPadding="10dp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRestore"
             style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="10dp"
             android:text="@string/restore"
-            app:cornerRadius="16dp"
+            app:cornerRadius="18dp"
+            app:icon="@drawable/ic_restore"
+            app:iconGravity="textStart"
+            app:iconPadding="10dp"
             app:strokeColor="@color/cyan" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

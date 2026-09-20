@@ -1,10 +1,6 @@
 package br.com.alongamento.tela.ui
 
-import android.app.AppOpsManager
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -20,13 +16,14 @@ import br.com.alongamento.tela.R
 import br.com.alongamento.tela.apps.InstalledApps
 import br.com.alongamento.tela.apps.LaunchApp
 import br.com.alongamento.tela.data.AppPrefs
-import br.com.alongamento.tela.monitor.GameWatchService
+import br.com.alongamento.tela.overlay.GameSession
+import br.com.alongamento.tela.overlay.SessionStart
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputEditText
 
 class GamesFragment : Fragment() {
     private var all = listOf<LaunchApp>()
+    private var adapter: AppAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_games, container, false)
@@ -36,10 +33,6 @@ class GamesFragment : Fragment() {
         val selected = view.findViewById<TextView>(R.id.txtSelected)
         val search = view.findViewById<TextInputEditText>(R.id.edtSearch)
         val list = view.findViewById<RecyclerView>(R.id.recycler)
-        val auto = view.findViewById<SwitchMaterial>(R.id.swAuto)
-        val launch = view.findViewById<SwitchMaterial>(R.id.swLaunch)
-        auto.isChecked = AppPrefs.autoApply
-        launch.isChecked = AppPrefs.launchAfter
 
         fun showSelected() {
             selected.text = if (AppPrefs.selectedPackage.isBlank()) {
@@ -47,9 +40,10 @@ class GamesFragment : Fragment() {
             } else {
                 getString(R.string.selected_game, AppPrefs.selectedLabel, AppPrefs.selectedPackage)
             }
+            adapter?.notifyDataSetChanged()
         }
 
-        val adapter = AppAdapter { app ->
+        adapter = AppAdapter { app ->
             AppPrefs.selectedPackage = app.packageName
             AppPrefs.selectedLabel = app.label
             showSelected()
@@ -57,9 +51,10 @@ class GamesFragment : Fragment() {
         }
         list.layoutManager = LinearLayoutManager(requireContext())
         list.adapter = adapter
+        list.setHasFixedSize(true)
 
         all = InstalledApps.list(requireContext().packageManager)
-        adapter.submit(all)
+        adapter?.submit(all)
         showSelected()
 
         search.addTextChangedListener(object : TextWatcher {
@@ -67,42 +62,24 @@ class GamesFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
                 val q = s?.toString()?.trim()?.lowercase().orEmpty()
-                adapter.submit(if (q.isBlank()) all else all.filter {
+                adapter?.submit(if (q.isBlank()) all else all.filter {
                     it.label.lowercase().contains(q) || it.packageName.contains(q)
                 })
             }
         })
 
-        auto.setOnCheckedChangeListener { _, checked ->
-            AppPrefs.autoApply = checked
-            if (checked) {
-                if (!hasUsage()) {
-                    auto.isChecked = false
-                    AppPrefs.autoApply = false
-                    startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
-                    Toast.makeText(requireContext(), R.string.need_usage, Toast.LENGTH_LONG).show()
-                } else {
-                    GameWatchService.start(requireContext())
+        view.findViewById<MaterialButton>(R.id.btnOpenGame).setOnClickListener {
+            when (val r = GameSession.prepare(requireContext())) {
+                SessionStart.Ok -> Toast.makeText(requireContext(), R.string.session_started, Toast.LENGTH_LONG).show()
+                SessionStart.NeedShell -> Toast.makeText(requireContext(), R.string.need_shell, Toast.LENGTH_LONG).show()
+                SessionStart.NeedGame -> Toast.makeText(requireContext(), R.string.need_game, Toast.LENGTH_LONG).show()
+                SessionStart.NeedOverlay -> {
+                    Toast.makeText(requireContext(), R.string.need_overlay, Toast.LENGTH_LONG).show()
+                    GameSession.requestOverlayPermission(requireActivity())
                 }
-            } else {
-                GameWatchService.stop(requireContext())
+                is SessionStart.Error -> Toast.makeText(requireContext(), r.message, Toast.LENGTH_LONG).show()
             }
         }
-        launch.setOnCheckedChangeListener { _, c -> AppPrefs.launchAfter = c }
-
-        view.findViewById<MaterialButton>(R.id.btnUsage).setOnClickListener {
-            startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
-        }
-    }
-
-    private fun hasUsage(): Boolean {
-        val appOps = requireContext().getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-        val mode = appOps.checkOpNoThrow(
-            AppOpsManager.OPSTR_GET_USAGE_STATS,
-            android.os.Process.myUid(),
-            requireContext().packageName
-        )
-        return mode == AppOpsManager.MODE_ALLOWED
     }
 }
 

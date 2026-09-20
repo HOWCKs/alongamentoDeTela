@@ -30,33 +30,9 @@ object AppPrefs {
         get() = p.getInt("dpi", 0)
         set(v) { p.edit().putInt("dpi", v).apply() }
 
-    var autoDpi: Boolean
-        get() = p.getBoolean("auto_dpi", false)
-        set(v) { p.edit().putBoolean("auto_dpi", v).apply() }
-
-    var autoApply: Boolean
-        get() = p.getBoolean("auto_apply", false)
-        set(v) { p.edit().putBoolean("auto_apply", v).apply() }
-
-    var launchAfter: Boolean
-        get() = p.getBoolean("launch_after", true)
-        set(v) { p.edit().putBoolean("launch_after", v).apply() }
-
-    var safetySeconds: Int
-        get() = p.getInt("safety", 12)
-        set(v) { p.edit().putInt("safety", v).apply() }
-
-    var safetyEnabled: Boolean
-        get() = p.getBoolean("safety_on", true)
-        set(v) { p.edit().putBoolean("safety_on", v).apply() }
-
     var stretched: Boolean
         get() = p.getBoolean("stretched", false)
         set(v) { p.edit().putBoolean("stretched", v).apply() }
-
-    var lastRatioId: String
-        get() = p.getString("ratio", "21:9") ?: "21:9"
-        set(v) { p.edit().putString("ratio", v).apply() }
 
     var adbHost: String
         get() = p.getString("adb_host", "127.0.0.1") ?: "127.0.0.1"
@@ -81,4 +57,17 @@ object AppPrefs {
     var nativeDpi: Int
         get() = p.getInt("nat_dpi", 0)
         set(v) { p.edit().putInt("nat_dpi", v).apply() }
+
+    var multiplierCents: Int
+        get() = p.getInt("mult", 150).coerceIn(101, 199)
+        set(v) { p.edit().putInt("mult", v.coerceIn(101, 199)).apply() }
+
+    val multiplier: Float get() = multiplierCents / 100f
+
+    var corteLateral: Boolean
+        get() = p.getBoolean("corte", true)
+        set(v) { p.edit().putBoolean("corte", v).apply() }
+
+    val mode: ProjectionMode
+        get() = if (corteLateral) ProjectionMode.CORTE else ProjectionMode.ALONGAR
 }

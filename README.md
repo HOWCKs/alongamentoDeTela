@@ -4,14 +4,13 @@ App Android para **esticar a tela do sistema** em jogos (FOV / HUD) **sem modifi
 
 Usa `wm size` e `wm density` com permissão de shell via **Shizuku** ou **depuração Wi‑Fi (ADB no próprio aparelho)**. Sem root.
 
-## O que faz
+## O que faz (v1.1)
 
-- Presets por proporção calculados neste celular: 16:9, 18:9, 20:9, 21:9, 32:9
-- Largura, altura e DPI manuais
-- Seletor de qualquer jogo
-- Aplicar ao abrir o jogo e restaurar ao sair (acesso ao uso)
-- Confirmação com temporizador (desfaz se a tela ficar ruim)
-- Tiles de ajustes rápidos: Alongar e Restaurar
+- **Flutuante obrigatório:** o alongamento só aplica com o jogo aberto e a bolha por cima
+- Nativa vs projeção, multiplicador 1.01x–1.99x
+- Modos **Alongar** e **Corte lateral** (recomendado)
+- Seletor de jogo + Abrir com flutuante
+- Restaurar no painel da bolha, no Início ou no tile
 - Interface 100% em português, tema escuro neon
 
 ## Ativação

@@ -19,19 +19,8 @@ class StretchTileService : TileService() {
 
     override fun onClick() {
         scope.launch {
-            runCatching {
-                if (AppPrefs.stretched) {
-                    DisplayController.restore()
-                } else if (AppPrefs.lastWidth > 0) {
-                    DisplayController.apply(
-                        AppPrefs.lastWidth,
-                        AppPrefs.lastHeight,
-                        AppPrefs.lastDpi.takeIf { it > 0 },
-                        safetyNote = false
-                    )
-                }
-            }
-            qsTile?.state = if (AppPrefs.stretched) Tile.STATE_ACTIVE else Tile.STATE_INACTIVE
+            runCatching { DisplayController.restore() }
+            qsTile?.state = Tile.STATE_INACTIVE
             qsTile?.updateTile()
         }
     }

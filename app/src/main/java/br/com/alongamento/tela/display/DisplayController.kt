@@ -4,6 +4,9 @@ import android.content.Context
 import android.util.DisplayMetrics
 import android.view.WindowManager
 import br.com.alongamento.tela.data.AppPrefs
+import br.com.alongamento.tela.data.Projection
+import br.com.alongamento.tela.data.ProjectionMode
+import br.com.alongamento.tela.data.ProjectionPlan
 import br.com.alongamento.tela.data.WmState
 import br.com.alongamento.tela.shell.ShellExecutor
 
@@ -29,38 +32,40 @@ object DisplayController {
         return state
     }
 
+    fun currentPlan(context: Context): ProjectionPlan {
+        val (mw, mh, _) = metrics(context)
+        val w = if (AppPrefs.nativeW > 0) AppPrefs.nativeW else mw
+        val h = if (AppPrefs.nativeH > 0) AppPrefs.nativeH else mh
+        return Projection.plan(w, h, AppPrefs.multiplier, AppPrefs.mode)
+    }
+
     private fun rememberNative(w: Int, h: Int, dpi: Int) {
-        if (AppPrefs.nativeW == 0 && w > 0) {
+        if (w > 0) {
             AppPrefs.nativeW = w
             AppPrefs.nativeH = h
             AppPrefs.nativeDpi = dpi
         }
     }
 
-    suspend fun apply(width: Int, height: Int, dpi: Int?, safetyNote: Boolean = true) {
-        require(width in 240..7680 && height in 240..7680) { "Resolução fora do intervalo seguro." }
-        ShellExecutor.exec("wm size ${width}x${height}")
-        if (dpi != null && dpi > 0) {
-            require(dpi in 80..640) { "DPI fora do intervalo seguro." }
-            ShellExecutor.exec("wm density $dpi")
+    suspend fun applyPlan(plan: ProjectionPlan) {
+        require(plan.projW in 240..7680 && plan.projH in 240..7680) { "Resolução fora do intervalo seguro." }
+        ShellExecutor.exec("wm size ${plan.projW}x${plan.projH}")
+        if (plan.mode == ProjectionMode.CORTE && plan.cropEachSide > 0) {
+            val c = plan.cropEachSide
+            runCatching { ShellExecutor.exec("wm overscan $c,0,$c,0") }
+        } else {
+            runCatching { ShellExecutor.exec("wm overscan 0,0,0,0") }
         }
-        AppPrefs.lastWidth = width
-        AppPrefs.lastHeight = height
-        AppPrefs.lastDpi = dpi ?: 0
+        AppPrefs.lastWidth = plan.projW
+        AppPrefs.lastHeight = plan.projH
         AppPrefs.stretched = true
-        if (safetyNote) {
-            // caller opens countdown
-        }
     }
 
     suspend fun restore() {
+        runCatching { ShellExecutor.exec("wm overscan reset") }
+        runCatching { ShellExecutor.exec("wm overscan 0,0,0,0") }
         ShellExecutor.exec("wm size reset")
-        ShellExecutor.exec("wm density reset")
+        runCatching { ShellExecutor.exec("wm density reset") }
         AppPrefs.stretched = false
-    }
-
-    fun scaledDpi(nativeDpi: Int, nativeShort: Int, newShort: Int): Int {
-        if (nativeShort <= 0) return nativeDpi
-        return (nativeDpi.toFloat() * newShort / nativeShort).toInt().coerceIn(120, 560)
     }
 }

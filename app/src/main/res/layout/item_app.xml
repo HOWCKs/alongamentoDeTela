@@ -2,22 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_card"
+    android:background="@drawable/bg_app_row"
+    android:foreground="?attr/selectableItemBackground"
     android:gravity="center_vertical"
+    android:minHeight="72dp"
     android:layout_marginBottom="8dp"
     android:orientation="horizontal"
-    android:padding="10dp">
+    android:paddingStart="12dp"
+    android:paddingEnd="12dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
 
     <ImageView
         android:id="@+id/imgIcon"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:contentDescription="@null" />
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="14dp"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
@@ -25,6 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/text"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView

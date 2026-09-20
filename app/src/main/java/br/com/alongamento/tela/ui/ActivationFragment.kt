@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import br.com.alongamento.tela.R
 import br.com.alongamento.tela.adb.AlongamentoAdb
+import br.com.alongamento.tela.overlay.GameSession
 import br.com.alongamento.tela.data.AppPrefs
 import br.com.alongamento.tela.shell.ShellBackend
 import br.com.alongamento.tela.shell.ShellExecutor
@@ -40,6 +41,9 @@ class ActivationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         bindStatus(view)
+        view.findViewById<MaterialButton>(R.id.btnOverlayPerm).setOnClickListener {
+            GameSession.requestOverlayPermission(requireActivity())
+        }
         view.findViewById<MaterialButton>(R.id.btnShizukuAuth).setOnClickListener {
             if (!Shizuku.pingBinder()) {
                 toast(getString(R.string.shizuku_off))

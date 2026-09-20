@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:id="@+id/bubble"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:background="@drawable/bg_bubble"
+        android:clickable="true"
+        android:focusable="true"
+        android:elevation="10dp">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_stretch" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/panel"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_overlay_panel"
+        android:elevation="16dp"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/overlay_title"
+                android:textAllCaps="true"
+                android:textColor="@color/neon"
+                android:textStyle="bold" />
+
+            <ImageButton
+                android:id="@+id/btnMinimize"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/overlay_minimize"
+                android:padding="10dp"
+                android:src="@drawable/ic_close"
+                app:tint="@color/muted" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtMult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="1.50x"
+            android:textColor="@color/text"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/sliderMult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:value="1.50"
+            android:valueFrom="1.01"
+            android:valueTo="1.99"
+            app:haloColor="@color/neon"
+            app:thumbTint="@color/neon"
+            app:trackActiveTint="@color/neon" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_native"
+                    android:textAllCaps="true"
+                    android:textColor="@color/muted"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/txtNative"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_proj"
+                    android:textAllCaps="true"
+                    android:textColor="@color/muted"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/txtProj"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/cyan"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnModeAlongar"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:text="@string/mode_alongar"
+                android:textSize="12sp"
+                app:cornerRadius="12dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnModeCorte"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:text="@string/mode_corte"
+                android:textSize="12sp"
+                app:cornerRadius="12dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnApply"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1"
+                android:text="@string/apply_short"
+                app:cornerRadius="14dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRestore"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:text="@string/restore"
+                app:cornerRadius="14dp"
+                app:strokeColor="@color/cyan" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

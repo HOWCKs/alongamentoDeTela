@@ -3,8 +3,6 @@ package br.com.alongamento.tela.monitor
 import android.app.Notification
 import android.app.PendingIntent
 import android.app.Service
-import android.app.usage.UsageEvents
-import android.app.usage.UsageStatsManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo
@@ -16,7 +14,6 @@ import br.com.alongamento.tela.MainActivity
 import br.com.alongamento.tela.R
 import br.com.alongamento.tela.data.AppPrefs
 import br.com.alongamento.tela.display.DisplayController
-import br.com.alongamento.tela.shell.ShellExecutor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -80,44 +77,7 @@ class GameWatchService : Service() {
     }
 
     private suspend fun loop() {
-        val usm = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-        while (scope.isActive) {
-            val target = AppPrefs.selectedPackage
-            if (target.isBlank() || !AppPrefs.autoApply || !ShellExecutor.isReady()) {
-                delay(1500)
-                continue
-            }
-            val fg = foregroundPackage(usm)
-            val playing = fg == target
-            try {
-                if (playing && !applied && AppPrefs.lastWidth > 0) {
-                    DisplayController.apply(AppPrefs.lastWidth, AppPrefs.lastHeight, AppPrefs.lastDpi.takeIf { it > 0 }, safetyNote = false)
-                    applied = true
-                } else if (!playing && applied) {
-                    DisplayController.restore()
-                    applied = false
-                }
-            } catch (_: Throwable) {
-            }
-            delay(1200)
-        }
-    }
-
-    private fun foregroundPackage(usm: UsageStatsManager): String? {
-        val end = System.currentTimeMillis()
-        val begin = end - 4000
-        val events = usm.queryEvents(begin, end)
-        val event = UsageEvents.Event()
-        var last: String? = null
-        while (events.hasNextEvent()) {
-            events.getNextEvent(event)
-            if (event.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND ||
-                event.eventType == UsageEvents.Event.ACTIVITY_RESUMED
-            ) {
-                last = event.packageName
-            }
-        }
-        return last
+        while (scope.isActive) delay(5000)
     }
 
     companion object {
