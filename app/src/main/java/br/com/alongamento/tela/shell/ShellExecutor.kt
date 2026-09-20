@@ -61,7 +61,7 @@ object ShellExecutor {
         when {
             isShizukuReady() -> execShizuku(command)
             AlongamentoAdb.isConnected() -> AlongamentoAdb.shell(command)
-            else -> error("Nenhuma permissão de shell. Ative o Shizuku ou a depuração Wi‑Fi.")
+            else -> error("Nenhuma permissão de shell. Autorize o Shizuku na aba Ativação.")
         }
     }
 

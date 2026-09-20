@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import br.com.alongamento.tela.data.AppPrefs
 import br.com.alongamento.tela.shell.ShellExecutor
@@ -36,9 +38,12 @@ object GameSession {
         if (!canDraw(context)) return SessionStart.NeedOverlay
         val launch = context.packageManager.getLaunchIntentForPackage(AppPrefs.selectedPackage)
             ?: return SessionStart.Error("Não achei como abrir ${AppPrefs.selectedLabel}.")
-        OverlayService.start(context)
-        launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(launch)
+        launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
+        val app = context.applicationContext
+        OverlayService.start(app)
+        Handler(Looper.getMainLooper()).postDelayed({
+            runCatching { app.startActivity(launch) }
+        }, 700)
         return SessionStart.Ok
     }
 

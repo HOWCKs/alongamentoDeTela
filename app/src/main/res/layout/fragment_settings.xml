@@ -13,7 +13,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:letterSpacing="0.12"
             android:text="@string/nav_settings"
+            android:textAllCaps="true"
             android:textColor="@color/neon"
             android:textSize="22sp"
             android:textStyle="bold" />
@@ -22,15 +24,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:letterSpacing="0.08"
             android:text="@string/about_title"
-            android:textColor="@color/cyan"
+            android:textAllCaps="true"
+            android:textColor="@color/neon"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:background="@drawable/bg_card"
             android:lineSpacingExtra="4dp"
+            android:padding="14dp"
             android:text="@string/about_body"
             android:textColor="@color/text" />
 

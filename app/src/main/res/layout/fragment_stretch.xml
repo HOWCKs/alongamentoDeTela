@@ -15,7 +15,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:letterSpacing="0.16"
             android:text="@string/home_title"
+            android:textAllCaps="true"
             android:textColor="@color/neon"
             android:textSize="26sp"
             android:textStyle="bold" />
@@ -132,10 +134,11 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:text="@string/mode_alongar"
-                app:cornerRadius="16dp"
+                app:cornerRadius="4dp"
                 app:icon="@drawable/ic_stretch"
                 app:iconGravity="textStart"
-                app:iconPadding="8dp" />
+                app:iconPadding="8dp"
+                app:strokeColor="@color/neon" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnModeCorte"
@@ -144,7 +147,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 android:text="@string/mode_corte"
-                app:cornerRadius="16dp"
+                app:cornerRadius="4dp"
                 app:icon="@drawable/ic_crop"
                 app:iconGravity="textStart"
                 app:iconPadding="8dp" />
@@ -174,7 +177,7 @@
             android:layout_height="60dp"
             android:layout_marginTop="16dp"
             android:text="@string/open_with_overlay"
-            app:cornerRadius="18dp"
+            app:cornerRadius="4dp"
             app:icon="@drawable/ic_play"
             app:iconGravity="textStart"
             app:iconPadding="10dp" />
@@ -186,10 +189,10 @@
             android:layout_height="56dp"
             android:layout_marginTop="10dp"
             android:text="@string/restore"
-            app:cornerRadius="18dp"
+            app:cornerRadius="4dp"
             app:icon="@drawable/ic_restore"
             app:iconGravity="textStart"
             app:iconPadding="10dp"
-            app:strokeColor="@color/cyan" />
+            app:strokeColor="@color/neon" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

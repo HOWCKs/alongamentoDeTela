@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg">
@@ -13,7 +14,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:letterSpacing="0.12"
             android:text="@string/nav_activation"
+            android:textAllCaps="true"
             android:textColor="@color/neon"
             android:textSize="22sp"
             android:textStyle="bold" />
@@ -25,7 +28,8 @@
             android:layout_marginTop="12dp"
             android:background="@drawable/bg_card"
             android:padding="14dp"
-            android:textColor="@color/cyan" />
+            android:textColor="@color/cyan"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,7 +42,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:letterSpacing="0.08"
                 android:text="@string/overlay_perm_title"
+                android:textAllCaps="true"
                 android:textColor="@color/neon"
                 android:textStyle="bold" />
 
@@ -55,7 +61,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/overlay_perm_btn" />
+                android:text="@string/overlay_perm_btn"
+                app:cornerRadius="4dp"
+                app:icon="@drawable/ic_stretch"
+                app:iconGravity="textStart" />
         </LinearLayout>
 
         <LinearLayout
@@ -69,44 +78,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:letterSpacing="0.08"
                 android:text="@string/shizuku_title"
+                android:textAllCaps="true"
                 android:textColor="@color/neon"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/txtShizukuStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:text="@string/shizuku_body"
-                android:textColor="@color/text" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnShizukuAuth"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/authorize" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnOpenShizuku"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/open_shizuku" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/bg_card"
-            android:orientation="vertical"
-            android:padding="14dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/wifi_title"
+                android:text="@string/shizuku_status_off"
                 android:textColor="@color/cyan"
                 android:textStyle="bold" />
 
@@ -114,8 +97,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:text="@string/wifi_body"
+                android:lineSpacingExtra="4dp"
+                android:text="@string/shizuku_body"
                 android:textColor="@color/text" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnShizukuAuth"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/authorize"
+                app:cornerRadius="4dp"
+                app:icon="@drawable/ic_key"
+                app:iconGravity="textStart" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnOpenShizuku"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="@string/open_shizuku"
+                app:cornerRadius="4dp"
+                app:icon="@drawable/ic_play"
+                app:iconGravity="textStart"
+                app:strokeColor="@color/neon" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnDevOptions"
@@ -123,74 +128,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/open_dev" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/host">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtHost"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:hint="@string/pair_port">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtPairPort"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:hint="@string/pair_code">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtCode"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:maxLength="6" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:hint="@string/conn_port">
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edtConnPort"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="number" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnDiscover"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/discover" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnPair"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/pair" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnConnect"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/connect" />
         </LinearLayout>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

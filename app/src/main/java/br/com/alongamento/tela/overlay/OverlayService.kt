@@ -9,11 +9,15 @@ import android.content.pm.ServiceInfo
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.IBinder
+import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
@@ -23,13 +27,12 @@ import br.com.alongamento.tela.R
 import br.com.alongamento.tela.data.AppPrefs
 import br.com.alongamento.tela.data.Projection
 import br.com.alongamento.tela.display.DisplayController
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.slider.Slider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.math.abs
 
 class OverlayService : Service() {
@@ -60,6 +63,7 @@ class OverlayService : Service() {
                 }
             }
         }
+        if (root == null) attach()
         return START_STICKY
     }
 
@@ -80,57 +84,119 @@ class OverlayService : Service() {
             Intent(this, OverlayService::class.java).setAction(ACTION_STOP),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
+        val restore = PendingIntent.getService(
+            this, 13,
+            Intent(this, OverlayService::class.java).setAction(ACTION_RESTORE),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
         val n: Notification = NotificationCompat.Builder(this, AlongamentoApp.CHANNEL_MONITOR)
             .setSmallIcon(R.drawable.ic_stretch)
             .setContentTitle(getString(R.string.app_name))
             .setContentText(getString(R.string.overlay_running))
             .setContentIntent(open)
-            .addAction(R.drawable.ic_restore, getString(R.string.restore), PendingIntent.getService(
-                this, 13,
-                Intent(this, OverlayService::class.java).setAction(ACTION_RESTORE),
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            ))
+            .addAction(R.drawable.ic_restore, getString(R.string.restore), restore)
             .addAction(0, getString(R.string.overlay_close), stop)
             .setOngoing(true)
             .build()
-        if (Build.VERSION.SDK_INT >= 34) {
-            startForeground(43, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
-        } else {
-            startForeground(43, n)
+        try {
+            if (Build.VERSION.SDK_INT >= 34) {
+                startForeground(43, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
+            } else {
+                startForeground(43, n)
+            }
+        } catch (_: Throwable) {
+            runCatching { startForeground(43, n) }
         }
     }
 
     private fun attach() {
-        val view = LayoutInflater.from(this).inflate(R.layout.overlay_root, null)
-        root = view
+        if (root != null) return
+        if (!GameSession.canDraw(this)) return
+        try {
+            val themed = ContextThemeWrapper(this, R.style.Theme.Alongamento)
+            val view = LayoutInflater.from(themed).inflate(R.layout.overlay_root, null)
+            show(view)
+        } catch (_: Throwable) {
+            attachFallback()
+        }
+    }
+
+    private fun attachFallback() {
+        try {
+            val bubble = ImageView(this).apply {
+                setImageResource(R.drawable.ic_stretch)
+                setBackgroundResource(R.drawable.bg_bubble)
+                setPadding(dp(16), dp(16), dp(16), dp(16))
+                contentDescription = getString(R.string.overlay_fallback)
+                setOnClickListener {
+                    scope.launch {
+                        runCatching {
+                            val plan = DisplayController.currentPlan(this@OverlayService)
+                            withContext(Dispatchers.IO) { DisplayController.applyPlan(plan) }
+                        }
+                        Toast.makeText(this@OverlayService, R.string.applied_overlay, Toast.LENGTH_SHORT).show()
+                    }
+                }
+                setOnLongClickListener {
+                    scope.launch {
+                        runCatching { withContext(Dispatchers.IO) { DisplayController.restore() } }
+                        Toast.makeText(this@OverlayService, R.string.restored, Toast.LENGTH_SHORT).show()
+                    }
+                    true
+                }
+            }
+            show(bubble, bindPanel = false)
+            Toast.makeText(this, R.string.overlay_fallback, Toast.LENGTH_LONG).show()
+        } catch (_: Throwable) {
+        }
+    }
+
+    private fun show(view: View, bindPanel: Boolean = true) {
         val lp = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT,
             GameSession.overlayType(),
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
                 WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
             PixelFormat.TRANSLUCENT
         )
+        if (Build.VERSION.SDK_INT >= 28) {
+            lp.layoutInDisplayCutoutMode =
+                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+        }
         lp.gravity = Gravity.TOP or Gravity.START
         lp.x = dp(12)
-        lp.y = dp(120)
+        lp.y = dp(140)
         params = lp
-        bind(view)
-        collapse(view)
+        root = view
+        if (bindPanel) {
+            bind(view)
+            view.findViewById<View>(R.id.panel).visibility = View.GONE
+            view.findViewById<View>(R.id.bubble).visibility = View.VISIBLE
+        }
         windowManager.addView(view, lp)
     }
 
     private fun detach() {
-        root?.let {
-            runCatching { windowManager.removeView(it) }
-        }
+        root?.let { runCatching { windowManager.removeView(it) } }
         root = null
+    }
+
+    private fun applyLayout(view: View) {
+        val lp = params ?: return
+        if (view.isAttachedToWindow) {
+            runCatching { windowManager.updateViewLayout(view, lp) }
+        }
     }
 
     private fun bind(view: View) {
         val bubble = view.findViewById<View>(R.id.bubble)
-        val panel = view.findViewById<View>(R.id.panel)
+        view.findViewById<ImageView>(R.id.imgBubble)
+            .setColorFilter(0xFFE10600.toInt())
+        view.findViewById<ImageView>(R.id.btnMinimize)
+            .setColorFilter(0xFFF4F4F4.toInt())
         bubble.setOnTouchListener(dragOrTap {
             expanded = !expanded
             if (expanded) expand(view) else collapse(view)
@@ -142,9 +208,9 @@ class OverlayService : Service() {
         val txtMult = view.findViewById<TextView>(R.id.txtMult)
         val txtNative = view.findViewById<TextView>(R.id.txtNative)
         val txtProj = view.findViewById<TextView>(R.id.txtProj)
-        val slider = view.findViewById<Slider>(R.id.sliderMult)
-        val btnAlongar = view.findViewById<MaterialButton>(R.id.btnModeAlongar)
-        val btnCorte = view.findViewById<MaterialButton>(R.id.btnModeCorte)
+        val slider = view.findViewById<SeekBar>(R.id.sliderMult)
+        val btnAlongar = view.findViewById<Button>(R.id.btnModeAlongar)
+        val btnCorte = view.findViewById<Button>(R.id.btnModeCorte)
 
         fun refreshPlan() {
             val plan = DisplayController.currentPlan(this)
@@ -156,14 +222,16 @@ class OverlayService : Service() {
             btnAlongar.alpha = if (corte) 0.45f else 1f
         }
 
-        slider.valueFrom = 1.01f
-        slider.valueTo = 1.99f
-        slider.stepSize = 0.01f
-        slider.value = AppPrefs.multiplier
-        slider.addOnChangeListener { _, value, _ ->
-            AppPrefs.multiplierCents = (value * 100).toInt()
-            refreshPlan()
-        }
+        slider.max = 98
+        slider.progress = (AppPrefs.multiplierCents - 101).coerceIn(0, 98)
+        slider.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                AppPrefs.multiplierCents = 101 + progress
+                refreshPlan()
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
         btnAlongar.setOnClickListener {
             AppPrefs.corteLateral = false
             refreshPlan()
@@ -172,11 +240,11 @@ class OverlayService : Service() {
             AppPrefs.corteLateral = true
             refreshPlan()
         }
-        view.findViewById<MaterialButton>(R.id.btnApply).setOnClickListener {
+        view.findViewById<Button>(R.id.btnApply).setOnClickListener {
             scope.launch {
                 try {
                     val plan = DisplayController.currentPlan(this@OverlayService)
-                    kotlinx.coroutines.withContext(Dispatchers.IO) { DisplayController.applyPlan(plan) }
+                    withContext(Dispatchers.IO) { DisplayController.applyPlan(plan) }
                     Toast.makeText(this@OverlayService, R.string.applied_overlay, Toast.LENGTH_SHORT).show()
                     expanded = false
                     collapse(view)
@@ -185,10 +253,10 @@ class OverlayService : Service() {
                 }
             }
         }
-        view.findViewById<MaterialButton>(R.id.btnRestore).setOnClickListener {
+        view.findViewById<Button>(R.id.btnRestore).setOnClickListener {
             scope.launch {
                 try {
-                    kotlinx.coroutines.withContext(Dispatchers.IO) { DisplayController.restore() }
+                    withContext(Dispatchers.IO) { DisplayController.restore() }
                     Toast.makeText(this@OverlayService, R.string.restored, Toast.LENGTH_SHORT).show()
                 } catch (e: Exception) {
                     Toast.makeText(this@OverlayService, e.message ?: "falha", Toast.LENGTH_LONG).show()
@@ -196,19 +264,20 @@ class OverlayService : Service() {
             }
         }
         refreshPlan()
-        panel.visibility = View.GONE
     }
 
     private fun expand(view: View) {
         view.findViewById<View>(R.id.panel).visibility = View.VISIBLE
         view.findViewById<View>(R.id.bubble).visibility = View.GONE
         params?.let {
-            it.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+            it.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
             it.gravity = Gravity.CENTER
             it.x = 0
             it.y = 0
-            windowManager.updateViewLayout(view, it)
+            applyLayout(view)
         }
     }
 
@@ -218,9 +287,10 @@ class OverlayService : Service() {
         params?.let {
             it.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
                 WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
             it.gravity = Gravity.TOP or Gravity.START
-            windowManager.updateViewLayout(view, it)
+            applyLayout(view)
         }
     }
 
@@ -248,7 +318,7 @@ class OverlayService : Service() {
                     if (dragged && !expanded) {
                         lp.x = startX + dx
                         lp.y = startY + dy
-                        root?.let { windowManager.updateViewLayout(it, lp) }
+                        root?.let { applyLayout(it) }
                     }
                     true
                 }

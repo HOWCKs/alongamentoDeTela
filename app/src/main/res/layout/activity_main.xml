@@ -6,6 +6,11 @@
     android:background="@color/bg"
     android:orientation="vertical">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/neon" />
+
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"

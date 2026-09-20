@@ -2,15 +2,16 @@
 <resources>
     <style name="Theme.Alongamento" parent="Theme.Material3.Dark.NoActionBar">
         <item name="colorPrimary">@color/neon</item>
-        <item name="colorOnPrimary">@color/bg</item>
+        <item name="colorOnPrimary">@color/on_neon</item>
         <item name="colorSecondary">@color/cyan</item>
-        <item name="colorOnSecondary">@color/bg</item>
+        <item name="colorOnSecondary">@color/on_neon</item>
         <item name="android:statusBarColor">@color/bg</item>
         <item name="android:navigationBarColor">@color/bg</item>
         <item name="android:windowBackground">@color/bg</item>
         <item name="android:textColor">@color/text</item>
         <item name="colorSurface">@color/card</item>
         <item name="colorOnSurface">@color/text</item>
+        <item name="colorError">@color/danger</item>
     </style>
 
     <style name="Theme.Alongamento.Dialog" parent="Theme.Alongamento">
