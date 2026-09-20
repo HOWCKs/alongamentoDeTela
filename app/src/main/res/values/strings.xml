@@ -28,7 +28,7 @@
     <string name="safety_body">Se a imagem ficar cortada ou o toque falhar, desfazemos sozinhos. Nada do jogo é alterado — só a resolução do sistema.</string>
     <string name="no_game">Nenhum jogo escolhido. Toque em um da lista.</string>
     <string name="no_game_home">1. Aba Jogos → escolha o título.\n2. Volte e toque em Abrir com flutuante.\nO alongamento só vale com a bolha por cima do jogo.</string>
-    <string name="home_game">Jogo: %1$s\n1. Abrir com flutuante e espere o jogo deitar.\n2. Bolha → Alongar → Aplicar.\nNativa deve ser 1080×2340 (não 2340×1080). Corte é zoom; Alongar é tela cheia.</string>
+    <string name="home_game">Jogo: %1$s\n1. Abrir com flutuante e espere o jogo deitar.\n2. Bolha → Alongar ou Corte → Aplicar.\nOs dois usam a proporção nativa (1080×2340). Corte agora cabe no painel.</string>
     <string name="selected_game">Selecionado: %1$s\n%2$s</string>
     <string name="game_picked">Jogo: %1$s</string>
     <string name="need_usage">Autorize o acesso ao uso para o automático por jogo.</string>
@@ -50,14 +50,14 @@
     <string name="dpi">DPI</string>
     <string name="auto_dpi">Ajustar DPI junto com a resolução</string>
     <string name="hero">Estica a tela do sistema. Zero patch no APK do jogo.</string>
-    <string name="hero_v2">A bolha aplica wm size via Shizuku — não captura a tela. Alongar = proporção nativa (sem barra). Corte = zoom 1:1. Use Alongar no Brawl Stars.</string>
+    <string name="hero_v2">Alongar aumenta a resolução na mesma proporção (estica, tela cheia). Corte reduz na mesma proporção (zoom, HUD maior, sem faixa). Sempre 1080×2340, nunca 2340×1080.</string>
     <string name="home_title">ALONGAMENTO</string>
     <string name="label_native">Nativa</string>
     <string name="label_proj">Projeção</string>
     <string name="mode_alongar">Alongar</string>
     <string name="mode_corte">Corte lateral</string>
     <string name="hint_alongar">Alongar: mesma proporção da tela física (ex.: 1080×2340 → 1944×4212). Tela cheia, jogo deita sozinho. Sem faixa preta.</string>
-    <string name="hint_corte">Corte: aumenta só o eixo longo e desliga o scaling (wm scaling off). Zoom no centro, painel preenchido, sem letra-caixa.</string>
+    <string name="hint_corte">Corte: mesma proporção, resolução menor (ex.: 1080×2340 → 900×1950). Zoom no centro, HUD maior, jogo deitado e cabendo no painel — sem faixa.</string>
     <string name="open_with_overlay">Abrir jogo com flutuante</string>
     <string name="games_hint">1. Toque no jogo.\n2. Abrir com flutuante.\n3. No jogo, na orientação certa (deitado se for paisagem), bolha → Aplicar.</string>
     <string name="session_started">Bolha no ar. Espere o jogo deitar, toque a bolha → Alongar → Aplicar.</string>

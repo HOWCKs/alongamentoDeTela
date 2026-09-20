@@ -5,7 +5,6 @@ import android.util.DisplayMetrics
 import android.view.WindowManager
 import br.com.alongamento.tela.data.AppPrefs
 import br.com.alongamento.tela.data.Projection
-import br.com.alongamento.tela.data.ProjectionMode
 import br.com.alongamento.tela.data.ProjectionPlan
 import br.com.alongamento.tela.data.WmState
 import br.com.alongamento.tela.shell.ShellExecutor
@@ -59,11 +58,7 @@ object DisplayController {
         val w = live.projW
         val h = live.projH
         runCatching { ShellExecutor.exec("wm overscan 0,0,0,0") }
-        if (live.mode == ProjectionMode.CORTE) {
-            runCatching { ShellExecutor.exec("wm scaling off") }
-        } else {
-            runCatching { ShellExecutor.exec("wm scaling auto") }
-        }
+        runCatching { ShellExecutor.exec("wm scaling auto") }
         ShellExecutor.exec("wm size ${w}x${h}")
         delay(90)
         ShellExecutor.exec("wm size ${w}x${h}")

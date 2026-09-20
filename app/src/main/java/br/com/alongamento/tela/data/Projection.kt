@@ -27,13 +27,24 @@ object Projection {
         val m = multiplier.coerceIn(1.01f, 1.99f)
         val nw = physW
         val nh = physH
+        if (nw <= 0 || nh <= 0) {
+            return ProjectionPlan(nw, nh, nw, nh, m, mode)
+        }
         return if (mode == ProjectionMode.CORTE) {
-            val longIsHeight = nh >= nw
-            if (longIsHeight) {
-                ProjectionPlan(nw, nh, nw, even((nh * m).toInt().coerceIn(nh, 7680)), m, mode)
+            // Same aspect as Physical size so the game still fills the panel.
+            // Smaller logical size = zoom (corta laterais do mundo), sem faixa.
+            val short = minOf(nw, nh)
+            val zoomedShort = even((short / m).toInt().coerceIn(720, short))
+            val w: Int
+            val h: Int
+            if (nw <= nh) {
+                w = zoomedShort
+                h = even(((w.toLong() * nh) / nw).toInt().coerceIn(w, nh))
             } else {
-                ProjectionPlan(nw, nh, even((nw * m).toInt().coerceIn(nw, 7680)), nh, m, mode)
+                h = zoomedShort
+                w = even(((h.toLong() * nw) / nh).toInt().coerceIn(h, nw))
             }
+            ProjectionPlan(nw, nh, w, h, m, mode)
         } else {
             ProjectionPlan(
                 nw, nh,
