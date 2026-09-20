@@ -11,8 +11,8 @@ android {
         applicationId = "br.com.alongamento.tela"
         minSdk = 26
         targetSdk = 35
-        versionCode = 10
-        versionName = "1.7.0"
+        versionCode = 11
+        versionName = "1.8.0"
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -86,4 +86,6 @@ dependencies {
     implementation("com.github.MuntashirAkon:libadb-android:3.1.1")
     implementation("org.conscrypt:conscrypt-android:2.5.3")
     implementation("org.bouncycastle:bcpkix-jdk15to18:1.78.1")
+
+    testImplementation("junit:junit:4.13.2")
 }

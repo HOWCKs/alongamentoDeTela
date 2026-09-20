@@ -62,6 +62,7 @@ class OverlayService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        OverlayMutex.claimStretch(this)
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
         startFg()
         attach()
@@ -90,6 +91,7 @@ class OverlayService : Service() {
         mainHandler.removeCallbacks(watchRunnable)
         detach()
         scope.cancel()
+        OverlayMutex.release(OverlayKind.STRETCH)
         super.onDestroy()
     }
 
@@ -387,6 +389,7 @@ class OverlayService : Service() {
         const val ACTION_RAISE = "br.com.alongamento.tela.OVERLAY_RAISE"
 
         fun start(context: Context) {
+            OverlayMutex.claimStretch(context)
             val i = Intent(context, OverlayService::class.java)
             if (Build.VERSION.SDK_INT >= 26) context.startForegroundService(i) else context.startService(i)
         }

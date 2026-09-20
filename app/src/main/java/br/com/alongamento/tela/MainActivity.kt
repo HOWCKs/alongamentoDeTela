@@ -8,6 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import br.com.alongamento.tela.hub.HubFragment
 import br.com.alongamento.tela.ui.ActivationFragment
 import br.com.alongamento.tela.ui.GamesFragment
 import br.com.alongamento.tela.ui.SettingsFragment
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         nav.setOnItemSelectedListener {
             swap(
                 when (it.itemId) {
+                    R.id.nav_hub -> HubFragment()
                     R.id.nav_games -> GamesFragment()
                     R.id.nav_activation -> ActivationFragment()
                     R.id.nav_settings -> SettingsFragment()

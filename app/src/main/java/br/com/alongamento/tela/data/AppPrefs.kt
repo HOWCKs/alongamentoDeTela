@@ -2,6 +2,7 @@ package br.com.alongamento.tela.data
 
 import android.content.Context
 import android.content.SharedPreferences
+import br.com.alongamento.tela.hub.HubProfile
 
 object AppPrefs {
     private lateinit var p: SharedPreferences
@@ -70,6 +71,10 @@ object AppPrefs {
 
     val mode: ProjectionMode
         get() = if (corteLateral) ProjectionMode.CORTE else ProjectionMode.ALONGAR
+
+    var hubProfile: String
+        get() = p.getString("hub_profile", HubProfile.BALANCED.name) ?: HubProfile.BALANCED.name
+        set(v) { p.edit().putString("hub_profile", v).apply() }
 
     fun flush() {
         p.edit()
