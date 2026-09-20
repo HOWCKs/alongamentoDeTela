@@ -8,7 +8,9 @@ import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.graphics.PixelFormat
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -37,10 +39,23 @@ import kotlin.math.abs
 
 class OverlayService : Service() {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+    private val mainHandler = Handler(Looper.getMainLooper())
     private lateinit var windowManager: WindowManager
     private var root: View? = null
     private var params: WindowManager.LayoutParams? = null
     private var expanded = false
+    private var watchLeft = 0
+    private val watchRunnable = object : Runnable {
+        override fun run() {
+            if (watchLeft <= 0) return
+            watchLeft--
+            if (root == null || root?.isAttachedToWindow != true) {
+                detach()
+                attach()
+            }
+            if (watchLeft > 0) mainHandler.postDelayed(this, 1200)
+        }
+    }
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -49,6 +64,7 @@ class OverlayService : Service() {
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
         startFg()
         attach()
+        startWatch()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -62,15 +78,42 @@ class OverlayService : Service() {
                     runCatching { DisplayController.restore() }
                 }
             }
+            ACTION_RAISE -> restack()
         }
         if (root == null) attach()
+        startWatch()
         return START_STICKY
     }
 
     override fun onDestroy() {
+        mainHandler.removeCallbacks(watchRunnable)
         detach()
         scope.cancel()
         super.onDestroy()
+    }
+
+    private fun startWatch() {
+        mainHandler.removeCallbacks(watchRunnable)
+        watchLeft = 16
+        mainHandler.postDelayed(watchRunnable, 800)
+    }
+
+    private fun restack() {
+        val view = root
+        val lp = params
+        if (view != null && lp != null && view.isAttachedToWindow) {
+            runCatching {
+                windowManager.removeView(view)
+                windowManager.addView(view, lp)
+            }.onFailure {
+                detach()
+                attach()
+            }
+        } else {
+            detach()
+            attach()
+        }
+        startWatch()
     }
 
     private fun startFg() {
@@ -336,9 +379,15 @@ class OverlayService : Service() {
     companion object {
         const val ACTION_STOP = "br.com.alongamento.tela.OVERLAY_STOP"
         const val ACTION_RESTORE = "br.com.alongamento.tela.OVERLAY_RESTORE"
+        const val ACTION_RAISE = "br.com.alongamento.tela.OVERLAY_RAISE"
 
         fun start(context: Context) {
             val i = Intent(context, OverlayService::class.java)
+            if (Build.VERSION.SDK_INT >= 26) context.startForegroundService(i) else context.startService(i)
+        }
+
+        fun raise(context: Context) {
+            val i = Intent(context, OverlayService::class.java).setAction(ACTION_RAISE)
             if (Build.VERSION.SDK_INT >= 26) context.startForegroundService(i) else context.startService(i)
         }
 

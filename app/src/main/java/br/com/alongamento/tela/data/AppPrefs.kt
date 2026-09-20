@@ -70,4 +70,19 @@ object AppPrefs {
 
     val mode: ProjectionMode
         get() = if (corteLateral) ProjectionMode.CORTE else ProjectionMode.ALONGAR
+
+    fun flush() {
+        p.edit()
+            .putString("pkg", selectedPackage)
+            .putString("pkg_label", selectedLabel)
+            .putInt("mult", multiplierCents)
+            .putBoolean("corte", corteLateral)
+            .putInt("nat_w", nativeW)
+            .putInt("nat_h", nativeH)
+            .putInt("nat_dpi", nativeDpi)
+            .putBoolean("stretched", stretched)
+            .putInt("w", lastWidth)
+            .putInt("h", lastHeight)
+            .commit()
+    }
 }

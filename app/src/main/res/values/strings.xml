@@ -19,7 +19,7 @@
     <string name="backend_none">Shizuku ainda não autorizado · abra Ativação</string>
     <string name="current_size">Agora: %1$s · %2$s</string>
     <string name="applied">Alongamento aplicado. O jogo não foi modificado.</string>
-    <string name="applied_overlay">Tela esticada. Nada do jogo foi alterado.</string>
+    <string name="applied_overlay">Tela esticada na proporção nativa. O giro do jogo permanece. Nada do APK foi alterado.</string>
     <string name="restored">Tela original restaurada.</string>
     <string name="safety_tick">Tela ok? Mantém em %1$d s…</string>
     <string name="safety_keep">Manter alongamento</string>
@@ -28,7 +28,7 @@
     <string name="safety_body">Se a imagem ficar cortada ou o toque falhar, desfazemos sozinhos. Nada do jogo é alterado — só a resolução do sistema.</string>
     <string name="no_game">Nenhum jogo escolhido. Toque em um da lista.</string>
     <string name="no_game_home">1. Aba Jogos → escolha o título.\n2. Volte e toque em Abrir com flutuante.\nO alongamento só vale com a bolha por cima do jogo.</string>
-    <string name="home_game">Jogo: %1$s\nToque em Abrir com flutuante. Com o jogo na tela, toque a bolha vermelha → Aplicar.</string>
+    <string name="home_game">Jogo: %1$s\n1. Abrir com flutuante.\n2. Deixe o jogo na orientação dele (Brawl Stars = deitado).\n3. Bolha → Aplicar. Restaurar se aparecer faixa preta.</string>
     <string name="selected_game">Selecionado: %1$s\n%2$s</string>
     <string name="game_picked">Jogo: %1$s</string>
     <string name="need_usage">Autorize o acesso ao uso para o automático por jogo.</string>
@@ -50,17 +50,17 @@
     <string name="dpi">DPI</string>
     <string name="auto_dpi">Ajustar DPI junto com a resolução</string>
     <string name="hero">Estica a tela do sistema. Zero patch no APK do jogo.</string>
-    <string name="hero_v2">A bolha vermelha precisa ficar sobre o jogo. Sem ela, o alongamento não entra na partida.</string>
+    <string name="hero_v2">A bolha fica sobre o jogo. Aplique com o título já aberto e deitado, se o jogo for paisagem. Sem a bolha, o alongamento não entra na partida.</string>
     <string name="home_title">ALONGAMENTO</string>
     <string name="label_native">Nativa</string>
     <string name="label_proj">Projeção</string>
     <string name="mode_alongar">Alongar</string>
     <string name="mode_corte">Corte lateral</string>
-    <string name="hint_alongar">Alongar: mantém o conteúdo e estica o quadro (mais FOV/HUD).</string>
-    <string name="hint_corte">Corte lateral (recomendado): a região central ocupa o painel e o toque acompanha. Perde visão nas laterais.</string>
+    <string name="hint_alongar">Alongar: mesma proporção da tela nativa (ex.: 1080×2340). O jogo continua deitado se for deitado. Sem barras pretas nas laterais.</string>
+    <string name="hint_corte">Corte lateral: amplia o eixo longo e recorta as bordas. O painel continua preenchido; some um pouco das laterais no modo paisagem.</string>
     <string name="open_with_overlay">Abrir jogo com flutuante</string>
-    <string name="games_hint">1. Toque no jogo.\n2. Toque em Abrir com flutuante.\n3. No jogo, toque a bolha → Aplicar.</string>
-    <string name="session_started">Bolha no ar. O jogo abre em seguida — toque a bolha e Aplicar.</string>
+    <string name="games_hint">1. Toque no jogo.\n2. Abrir com flutuante.\n3. No jogo, na orientação certa (deitado se for paisagem), bolha → Aplicar.</string>
+    <string name="session_started">Bolha no ar. O jogo abre em seguida. Toque a bolha vermelha → Aplicar.</string>
     <string name="need_shell">Autorize o Shizuku na aba Ativação.</string>
     <string name="need_game">Escolha um jogo na lista primeiro.</string>
     <string name="need_overlay">Autorize “exibir sobre outros apps” para a bolha aparecer no jogo.</string>
@@ -73,7 +73,7 @@
     <string name="overlay_perm_ok">Status: liberada. A bolha pode ficar sobre o jogo.</string>
     <string name="overlay_perm_btn">Permitir bolha sobre o jogo</string>
     <string name="shizuku_title">2 · Shizuku</string>
-    <string name="shizuku_body">1. Instale o Shizuku (Play Store ou GitHub).\n2. Ative Opções do desenvolvedor → Depuração sem fio.\n3. No Shizuku, inicie o serviço.\n4. Volte aqui e toque Autorizar.\n5. O status abaixo precisa ficar verde.</string>
+    <string name="shizuku_body">1. Instale o Shizuku (Play Store ou GitHub).\n2. Ative Opções do desenvolvedor → Depuração sem fio.\n3. No Shizuku, inicie o serviço.\n4. Volte aqui e toque Autorizar.\n5. O status precisa ficar: Shizuku autorizado.</string>
     <string name="shizuku_status_ok">Status: Shizuku autorizado.</string>
     <string name="shizuku_status_off">Status: Shizuku ainda não autorizado.</string>
     <string name="wifi_title">Depuração Wi‑Fi (ADB neste aparelho)</string>
@@ -90,7 +90,7 @@
     <string name="conn_port">Porta de conexão</string>
     <string name="safety_switch">Confirmar alongamento (desfaz sozinho)</string>
     <string name="about_title">Como usar</string>
-    <string name="about_body">1. Aba Ativação: permita a bolha sobre outros apps.\n2. Instale, inicie e autorize o Shizuku.\n3. Aba Jogos: toque no título (ex.: Brawl Stars).\n4. Início: toque em Abrir jogo com flutuante.\n5. Espere a bolha vermelha. O jogo abre em seguida.\n6. Com o jogo na tela, toque a bolha → Aplicar.\n7. Restaurar na bolha, na notificação ou no Início.\n\nAlongar estica o quadro. Corte lateral (recomendado) recorta as laterais e o toque acompanha.\n\nNada do APK/OBB do jogo é modificado — só a tela do sistema (wm size / overscan).</string>
+    <string name="about_body">1. Aba Ativação: permita a bolha sobre outros apps.\n2. Instale, inicie e autorize o Shizuku.\n3. Aba Jogos: toque no título (ex.: Brawl Stars).\n4. Início: toque em Abrir jogo com flutuante.\n5. Espere a bolha vermelha. O jogo abre em seguida.\n6. Com o jogo na tela, toque a bolha → Aplicar.\n7. Restaurar na bolha, na notificação ou no Início.\n\nSe a bolha sumir no jogo, toque a notificação “Flutuante do jogo”. No Game Booster da Samsung, permita pop-ups deste app.\n\nAlongar estica o quadro. Corte lateral (recomendado) recorta as laterais e o toque acompanha.\n\nNada do APK/OBB do jogo é modificado — só a tela do sistema (wm size / overscan).</string>
     <string name="overlay_fallback">Bolha simples: toque aplica, segure restaura.</string>
     <string name="steps_title">Rota</string>
 </resources>

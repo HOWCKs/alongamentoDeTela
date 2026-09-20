@@ -16,7 +16,8 @@ object DisplayController {
         val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         @Suppress("DEPRECATION")
         wm.defaultDisplay.getRealMetrics(dm)
-        return Triple(dm.widthPixels, dm.heightPixels, dm.densityDpi)
+        val (w, h) = Projection.portraitNative(dm.widthPixels, dm.heightPixels)
+        return Triple(w, h, dm.densityDpi)
     }
 
     suspend fun snapshot(context: Context): WmState {
@@ -28,7 +29,8 @@ object DisplayController {
         val size = ShellExecutor.exec("wm size")
         val density = ShellExecutor.exec("wm density")
         val state = WmState.parse(size, density, mw, mh, md)
-        rememberNative(state.physicalW, state.physicalH, state.physicalDpi)
+        val (pw, ph) = Projection.portraitNative(state.physicalW, state.physicalH)
+        rememberNative(pw, ph, state.physicalDpi)
         return state
     }
 
@@ -36,29 +38,33 @@ object DisplayController {
         val (mw, mh, _) = metrics(context)
         val w = if (AppPrefs.nativeW > 0) AppPrefs.nativeW else mw
         val h = if (AppPrefs.nativeH > 0) AppPrefs.nativeH else mh
-        return Projection.plan(w, h, AppPrefs.multiplier, AppPrefs.mode)
+        val (nw, nh) = Projection.portraitNative(w, h)
+        return Projection.plan(nw, nh, AppPrefs.multiplier, AppPrefs.mode)
     }
 
     private fun rememberNative(w: Int, h: Int, dpi: Int) {
-        if (w > 0) {
-            AppPrefs.nativeW = w
-            AppPrefs.nativeH = h
-            AppPrefs.nativeDpi = dpi
-        }
+        if (w <= 0 || h <= 0) return
+        val (nw, nh) = Projection.portraitNative(w, h)
+        AppPrefs.nativeW = nw
+        AppPrefs.nativeH = nh
+        AppPrefs.nativeDpi = dpi
     }
 
     suspend fun applyPlan(plan: ProjectionPlan) {
         require(plan.projW in 240..7680 && plan.projH in 240..7680) { "Resolução fora do intervalo seguro." }
-        ShellExecutor.exec("wm size ${plan.projW}x${plan.projH}")
-        if (plan.mode == ProjectionMode.CORTE && plan.cropEachSide > 0) {
-            val c = plan.cropEachSide
-            runCatching { ShellExecutor.exec("wm overscan $c,0,$c,0") }
+        val (w, h) = Projection.portraitNative(plan.projW, plan.projH)
+        ShellExecutor.exec("wm size ${w}x${h}")
+        if (plan.mode == ProjectionMode.CORTE && plan.cropLong > 0) {
+            val c = plan.cropLong
+            runCatching { ShellExecutor.exec("wm overscan 0,$c,0,$c") }
         } else {
             runCatching { ShellExecutor.exec("wm overscan 0,0,0,0") }
         }
-        AppPrefs.lastWidth = plan.projW
-        AppPrefs.lastHeight = plan.projH
+        keepAutoRotate()
+        AppPrefs.lastWidth = w
+        AppPrefs.lastHeight = h
         AppPrefs.stretched = true
+        AppPrefs.flush()
     }
 
     suspend fun restore() {
@@ -66,6 +72,12 @@ object DisplayController {
         runCatching { ShellExecutor.exec("wm overscan 0,0,0,0") }
         ShellExecutor.exec("wm size reset")
         runCatching { ShellExecutor.exec("wm density reset") }
+        keepAutoRotate()
         AppPrefs.stretched = false
+        AppPrefs.flush()
+    }
+
+    private suspend fun keepAutoRotate() {
+        runCatching { ShellExecutor.exec("settings put system accelerometer_rotation 1") }
     }
 }

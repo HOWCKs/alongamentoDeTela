@@ -39,11 +39,16 @@ object GameSession {
         val launch = context.packageManager.getLaunchIntentForPackage(AppPrefs.selectedPackage)
             ?: return SessionStart.Error("Não achei como abrir ${AppPrefs.selectedLabel}.")
         launch.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED)
+        AppPrefs.flush()
         val app = context.applicationContext
-        OverlayService.start(app)
-        Handler(Looper.getMainLooper()).postDelayed({
+        OverlayService.start(context)
+        val h = Handler(Looper.getMainLooper())
+        h.postDelayed({ OverlayService.raise(app) }, 450)
+        h.postDelayed({
             runCatching { app.startActivity(launch) }
-        }, 700)
+        }, 850)
+        h.postDelayed({ OverlayService.raise(app) }, 1600)
+        h.postDelayed({ OverlayService.raise(app) }, 2800)
         return SessionStart.Ok
     }
 
