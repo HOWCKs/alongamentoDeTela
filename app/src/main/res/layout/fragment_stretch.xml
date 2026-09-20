@@ -117,8 +117,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:haloColor="@color/neon"
-            app:thumbTint="@color/neon"
-            app:trackActiveTint="@color/neon" />
+            app:thumbTint="@color/neon" />
 
         <LinearLayout
             android:layout_width="match_parent"
