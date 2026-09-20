@@ -19,7 +19,7 @@
     <string name="backend_none">Shizuku ainda não autorizado · abra Ativação</string>
     <string name="current_size">Agora: %1$s · %2$s</string>
     <string name="applied">Alongamento aplicado. O jogo não foi modificado.</string>
-    <string name="applied_overlay">Tela esticada. O jogo pisca e preenche deitado. Nada do APK foi alterado.</string>
+    <string name="applied_overlay">Resolução do sistema aplicada. Nada do APK do jogo foi alterado.</string>
     <string name="restored">Tela original restaurada.</string>
     <string name="safety_tick">Tela ok? Mantém em %1$d s…</string>
     <string name="safety_keep">Manter alongamento</string>
@@ -28,7 +28,7 @@
     <string name="safety_body">Se a imagem ficar cortada ou o toque falhar, desfazemos sozinhos. Nada do jogo é alterado — só a resolução do sistema.</string>
     <string name="no_game">Nenhum jogo escolhido. Toque em um da lista.</string>
     <string name="no_game_home">1. Aba Jogos → escolha o título.\n2. Volte e toque em Abrir com flutuante.\nO alongamento só vale com a bolha por cima do jogo.</string>
-    <string name="home_game">Jogo: %1$s\n1. Abrir com flutuante.\n2. Espere o jogo deitar.\n3. Bolha → Alongar → Aplicar. O jogo pisca e estica na hora.</string>
+    <string name="home_game">Jogo: %1$s\n1. Abrir com flutuante e espere o jogo deitar.\n2. Bolha → Alongar → Aplicar.\nNativa deve ser 1080×2340 (não 2340×1080). Corte é zoom; Alongar é tela cheia.</string>
     <string name="selected_game">Selecionado: %1$s\n%2$s</string>
     <string name="game_picked">Jogo: %1$s</string>
     <string name="need_usage">Autorize o acesso ao uso para o automático por jogo.</string>
@@ -50,14 +50,14 @@
     <string name="dpi">DPI</string>
     <string name="auto_dpi">Ajustar DPI junto com a resolução</string>
     <string name="hero">Estica a tela do sistema. Zero patch no APK do jogo.</string>
-    <string name="hero_v2">Abra o jogo deitado, toque a bolha e Aplicar. O título pisca e a largura estica, preenchendo a tela.</string>
+    <string name="hero_v2">A bolha aplica wm size via Shizuku — não captura a tela. Alongar = proporção nativa (sem barra). Corte = zoom 1:1. Use Alongar no Brawl Stars.</string>
     <string name="home_title">ALONGAMENTO</string>
     <string name="label_native">Nativa</string>
     <string name="label_proj">Projeção</string>
     <string name="mode_alongar">Alongar</string>
     <string name="mode_corte">Corte lateral</string>
-    <string name="hint_alongar">Alongar: só a largura (ex.: 2340×1080 → 4212×1080). O jogo pisca, fica deitado e preenche o painel — como no GIF.</string>
-    <string name="hint_corte">Corte: mesma largura extra, depois recorta as laterais (zoom no centro). O jogo continua deitado e grande, sem faixa preta.</string>
+    <string name="hint_alongar">Alongar: mesma proporção da tela física (ex.: 1080×2340 → 1944×4212). Tela cheia, jogo deita sozinho. Sem faixa preta.</string>
+    <string name="hint_corte">Corte: aumenta só o eixo longo e desliga o scaling (wm scaling off). Zoom no centro, painel preenchido, sem letra-caixa.</string>
     <string name="open_with_overlay">Abrir jogo com flutuante</string>
     <string name="games_hint">1. Toque no jogo.\n2. Abrir com flutuante.\n3. No jogo, na orientação certa (deitado se for paisagem), bolha → Aplicar.</string>
     <string name="session_started">Bolha no ar. Espere o jogo deitar, toque a bolha → Alongar → Aplicar.</string>
@@ -90,7 +90,7 @@
     <string name="conn_port">Porta de conexão</string>
     <string name="safety_switch">Confirmar alongamento (desfaz sozinho)</string>
     <string name="about_title">Como usar</string>
-    <string name="about_body">1. Ativação: bolha sobre outros apps + Shizuku autorizado.\n2. Jogos: toque no título (ex.: Brawl Stars).\n3. Início: Abrir jogo com flutuante.\n4. Espere o jogo deitar.\n5. Bolha → Alongar → Aplicar. O jogo dá um reset rápido e estica só a largura (ex.: 2340×1080 → 4212×1080).\n6. Corte: zoom no centro (recorta laterais), ainda deitado e preenchendo o painel.\n7. Restaurar na bolha, na notificação ou no Início.\n\nNada do APK/OBB do jogo é modificado — só wm size / overscan.</string>
+    <string name="about_body">1. Ativação: bolha + Shizuku autorizado.\n2. Jogos: Brawl Stars.\n3. Abrir com flutuante, jogo deitado.\n4. Bolha → Alongar → Aplicar.\n5. Restaurar na bolha ou no Início.\n\nA bolha não captura nem redesenha o jogo (MediaProjection atrasaria o toque). O Shizuku manda wm size / wm scaling no display do sistema.\n\nAlongar: mesma proporção física (1080×2340). Sem faixa preta; o jogo deita sozinho.\nCorte: eixo longo maior + wm scaling off (zoom 1:1, sem letra-caixa).\n\nNo Galaxy, wm size 2340×1080 (largura &gt; altura) gera barra preta. Usamos a ordem do Physical size: 1080×2340.\nNo Game Booster, deixe o jogo em Tela cheia.\n\nNada do APK/OBB é modificado.</string>
     <string name="overlay_fallback">Bolha simples: toque aplica, segure restaura.</string>
     <string name="steps_title">Rota</string>
 </resources>

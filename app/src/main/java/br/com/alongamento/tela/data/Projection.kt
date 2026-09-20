@@ -15,27 +15,33 @@ data class ProjectionPlan(
 ) {
     val nativeLabel: String get() = "$nativeW × $nativeH"
     val projLabel: String get() = "$projW × $projH"
-    val cropEachSide: Int
-        get() = ((projW - nativeW) / 2).coerceAtLeast(0)
 }
 
 object Projection {
-    fun landscapeNative(physW: Int, physH: Int): Pair<Int, Int> {
-        val w = maxOf(physW, physH)
-        val h = minOf(physW, physH)
-        return w to h
-    }
-
     fun plan(
         physW: Int,
         physH: Int,
         multiplier: Float,
         mode: ProjectionMode
     ): ProjectionPlan {
-        val (nw, nh) = landscapeNative(physW, physH)
         val m = multiplier.coerceIn(1.01f, 1.99f)
-        val pw = even((nw * m).toInt().coerceIn(nw, 7680))
-        return ProjectionPlan(nw, nh, pw, nh, m, mode)
+        val nw = physW
+        val nh = physH
+        return if (mode == ProjectionMode.CORTE) {
+            val longIsHeight = nh >= nw
+            if (longIsHeight) {
+                ProjectionPlan(nw, nh, nw, even((nh * m).toInt().coerceIn(nh, 7680)), m, mode)
+            } else {
+                ProjectionPlan(nw, nh, even((nw * m).toInt().coerceIn(nw, 7680)), nh, m, mode)
+            }
+        } else {
+            ProjectionPlan(
+                nw, nh,
+                even((nw * m).toInt().coerceIn(nw, 7680)),
+                even((nh * m).toInt().coerceIn(nh, 7680)),
+                m, mode
+            )
+        }
     }
 
     fun multiplierLabel(value: Float): String = String.format("%.2fx", value)

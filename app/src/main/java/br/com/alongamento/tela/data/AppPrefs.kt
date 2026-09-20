@@ -65,7 +65,7 @@ object AppPrefs {
     val multiplier: Float get() = multiplierCents / 100f
 
     var corteLateral: Boolean
-        get() = p.getBoolean("corte", true)
+        get() = p.getBoolean("corte", false)
         set(v) { p.edit().putBoolean("corte", v).apply() }
 
     val mode: ProjectionMode
