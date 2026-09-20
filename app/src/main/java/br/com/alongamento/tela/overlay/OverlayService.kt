@@ -113,7 +113,7 @@ class OverlayService : Service() {
         if (root != null) return
         if (!GameSession.canDraw(this)) return
         try {
-            val themed = ContextThemeWrapper(this, R.style.Theme.Alongamento)
+            val themed = ContextThemeWrapper(this, R.style.Theme_Alongamento)
             val view = LayoutInflater.from(themed).inflate(R.layout.overlay_root, null)
             show(view)
         } catch (_: Throwable) {
