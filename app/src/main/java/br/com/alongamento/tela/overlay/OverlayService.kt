@@ -291,15 +291,21 @@ class OverlayService : Service() {
                 return
             }
             withContext(Dispatchers.IO) {
-                if (apply) DisplayController.applyPlan(DisplayController.currentPlan(this@OverlayService))
-                else DisplayController.restore()
+                if (apply) {
+                    DisplayController.applyPlan(
+                        this@OverlayService,
+                        DisplayController.currentPlan(this@OverlayService)
+                    )
+                } else {
+                    DisplayController.restore()
+                }
             }
             Toast.makeText(
                 this,
                 if (apply) R.string.applied_overlay else R.string.restored,
                 Toast.LENGTH_SHORT
             ).show()
-            if (apply) {
+            if (apply && view.findViewById<View?>(R.id.panel) != null) {
                 expanded = false
                 collapse(view)
             }
