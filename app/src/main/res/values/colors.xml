@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg">#050505</color>
+    <color name="bg2">#0A0A0A</color>
+    <color name="card">#141414</color>
+    <color name="stroke">#3A1010</color>
+    <color name="neon">#E10600</color>
+    <color name="cyan">#FF4D4D</color>
+    <color name="text">#F4F4F4</color>
+    <color name="muted">#8C8C8C</color>
+    <color name="danger">#FF3B30</color>
+    <color name="black">#000000</color>
+    <color name="on_neon">#FFFFFF</color>
+    <color name="hub_teal">#00E5C3</color>
+</resources>
