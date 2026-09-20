@@ -257,11 +257,11 @@ class OverlayService : Service() {
             btnAlongar.alpha = if (corte) 0.45f else 1f
         }
 
-        slider.max = 98
-        slider.progress = (AppPrefs.multiplierCents - 101).coerceIn(0, 98)
+        slider.max = 20
+        slider.progress = (AppPrefs.multiplierCents - 100).coerceIn(0, 20)
         slider.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                AppPrefs.multiplierCents = 101 + progress
+                AppPrefs.multiplierCents = 100 + progress
                 refreshPlan()
             }
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}

@@ -11,8 +11,8 @@ android {
         applicationId = "br.com.alongamento.tela"
         minSdk = 26
         targetSdk = 35
-        versionCode = 9
-        versionName = "1.6.1"
+        versionCode = 10
+        versionName = "1.7.0"
         vectorDrawables.useSupportLibrary = true
     }
 

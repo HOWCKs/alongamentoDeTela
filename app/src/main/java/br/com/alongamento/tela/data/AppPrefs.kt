@@ -59,8 +59,8 @@ object AppPrefs {
         set(v) { p.edit().putInt("nat_dpi", v).apply() }
 
     var multiplierCents: Int
-        get() = p.getInt("mult", 150).coerceIn(101, 199)
-        set(v) { p.edit().putInt("mult", v.coerceIn(101, 199)).apply() }
+        get() = p.getInt("mult", 110).coerceIn(100, 120)
+        set(v) { p.edit().putInt("mult", v.coerceIn(100, 120)).apply() }
 
     val multiplier: Float get() = multiplierCents / 100f
 

@@ -18,7 +18,9 @@ import br.com.alongamento.tela.shell.ShellBackend
 import br.com.alongamento.tela.shell.ShellExecutor
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.slider.Slider
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class StretchFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -32,8 +34,8 @@ class StretchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val slider = view.findViewById<Slider>(R.id.sliderMult)
-        slider.valueFrom = 1.01f
-        slider.valueTo = 1.99f
+        slider.valueFrom = 1.00f
+        slider.valueTo = 1.20f
         slider.stepSize = 0.01f
         slider.value = AppPrefs.multiplier
         slider.addOnChangeListener { _, value, _ ->
@@ -92,7 +94,19 @@ class StretchFragment : Fragment() {
 
     private fun startSession() {
         when (val r = GameSession.prepare(requireContext())) {
-            SessionStart.Ok -> toast(getString(R.string.session_started))
+            SessionStart.Ok -> {
+                toast(getString(R.string.session_started))
+                viewLifecycleOwner.lifecycleScope.launch {
+                    try {
+                        val ctx = requireContext().applicationContext
+                        withContext(Dispatchers.IO) {
+                            DisplayController.applyPlan(ctx, DisplayController.currentPlan(ctx))
+                        }
+                    } catch (e: Exception) {
+                        toast(e.message ?: "falha")
+                    }
+                }
+            }
             SessionStart.NeedShell -> toast(getString(R.string.need_shell))
             SessionStart.NeedGame -> toast(getString(R.string.need_game))
             SessionStart.NeedOverlay -> {

@@ -57,6 +57,7 @@ object DisplayController {
         val live = currentPlan(context)
         val w = live.projW
         val h = live.projH
+        runCatching { ShellExecutor.exec("wm density reset") }
         runCatching { ShellExecutor.exec("wm overscan 0,0,0,0") }
         runCatching { ShellExecutor.exec("wm scaling auto") }
         ShellExecutor.exec("wm size ${w}x${h}")
@@ -66,6 +67,21 @@ object DisplayController {
         AppPrefs.lastHeight = h
         AppPrefs.stretched = true
         AppPrefs.flush()
+        relaunchSelectedGame(context)
+    }
+
+    suspend fun relaunchSelectedGame(context: Context) {
+        val pkg = AppPrefs.selectedPackage
+        if (!pkg.matches(Regex("[a-zA-Z0-9._]+"))) return
+        runCatching { ShellExecutor.exec("am force-stop $pkg") }
+        delay(500)
+        val launch = context.packageManager.getLaunchIntentForPackage(pkg) ?: return
+        launch.addFlags(
+            android.content.Intent.FLAG_ACTIVITY_NEW_TASK or
+                android.content.Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+        )
+        delay(200)
+        context.startActivity(launch)
     }
 
     suspend fun restore() {

@@ -61,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="1.50x"
+            android:text="1.10x"
             android:textColor="@color/text"
             android:textSize="28sp"
             android:textStyle="bold" />
@@ -70,8 +70,8 @@
             android:id="@+id/sliderMult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="98"
-            android:progress="49"
+            android:max="20"
+            android:progress="10"
             android:progressTint="@color/neon"
             android:thumbTint="@color/neon" />
 
