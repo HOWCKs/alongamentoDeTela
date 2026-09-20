@@ -54,7 +54,6 @@
             android:name=".overlay.OverlayService"
             android:exported="false"
             android:foregroundServiceType="specialUse"
-            android:process=":overlay"
             android:stopWithTask="false">
             <property
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"

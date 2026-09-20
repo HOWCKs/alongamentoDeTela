@@ -8,8 +8,10 @@ import android.os.IBinder
 import br.com.alongamento.tela.BuildConfig
 import br.com.alongamento.tela.IShellService
 import br.com.alongamento.tela.adb.AlongamentoAdb
+import android.os.SystemClock
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
@@ -37,6 +39,15 @@ object ShellExecutor {
     }
 
     fun isReady(): Boolean = backend() != ShellBackend.NONE
+
+    suspend fun awaitReady(timeoutMs: Long = 2500): Boolean {
+        val start = SystemClock.elapsedRealtime()
+        while (SystemClock.elapsedRealtime() - start < timeoutMs) {
+            if (isReady()) return true
+            delay(120)
+        }
+        return isReady()
+    }
 
     fun isShizukuReady(): Boolean {
         return try {
@@ -66,12 +77,15 @@ object ShellExecutor {
     }
 
     private suspend fun execShizuku(command: String): String {
+        val viaProcess = runCatching { withContext(Dispatchers.IO) { execNewProcess(command) } }
+        if (viaProcess.isSuccess) return viaProcess.getOrThrow()
         bindUserService()
         val svc = userService
         if (svc != null) {
             return withContext(Dispatchers.IO) { svc.exec(command) }
         }
-        return execNewProcess(command)
+        throw viaProcess.exceptionOrNull()
+            ?: IllegalStateException("Shizuku não executou o comando.")
     }
 
     private suspend fun bindUserService() {

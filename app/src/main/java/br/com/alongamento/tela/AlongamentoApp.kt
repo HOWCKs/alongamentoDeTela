@@ -7,6 +7,7 @@ import android.os.Build
 import br.com.alongamento.tela.data.AppPrefs
 import br.com.alongamento.tela.shell.ShellExecutor
 import org.conscrypt.Conscrypt
+import rikka.shizuku.Shizuku
 import java.security.Security
 
 class AlongamentoApp : Application() {
@@ -19,6 +20,9 @@ class AlongamentoApp : Application() {
         }
         AppPrefs.init(this)
         ShellExecutor.init(this)
+        runCatching {
+            Shizuku.addBinderReceivedListenerSticky { }
+        }
         createChannels()
     }
 

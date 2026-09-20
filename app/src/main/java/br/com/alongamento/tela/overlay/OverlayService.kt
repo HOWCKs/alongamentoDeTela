@@ -29,6 +29,7 @@ import br.com.alongamento.tela.R
 import br.com.alongamento.tela.data.AppPrefs
 import br.com.alongamento.tela.data.Projection
 import br.com.alongamento.tela.display.DisplayController
+import br.com.alongamento.tela.shell.ShellExecutor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -172,19 +173,10 @@ class OverlayService : Service() {
                 setPadding(dp(16), dp(16), dp(16), dp(16))
                 contentDescription = getString(R.string.overlay_fallback)
                 setOnClickListener {
-                    scope.launch {
-                        runCatching {
-                            val plan = DisplayController.currentPlan(this@OverlayService)
-                            withContext(Dispatchers.IO) { DisplayController.applyPlan(plan) }
-                        }
-                        Toast.makeText(this@OverlayService, R.string.applied_overlay, Toast.LENGTH_SHORT).show()
-                    }
+                    scope.launch { runDisplayAction(this@apply, apply = true) }
                 }
                 setOnLongClickListener {
-                    scope.launch {
-                        runCatching { withContext(Dispatchers.IO) { DisplayController.restore() } }
-                        Toast.makeText(this@OverlayService, R.string.restored, Toast.LENGTH_SHORT).show()
-                    }
+                    scope.launch { runDisplayAction(this@apply, apply = false) }
                     true
                 }
             }
@@ -284,29 +276,36 @@ class OverlayService : Service() {
             refreshPlan()
         }
         view.findViewById<Button>(R.id.btnApply).setOnClickListener {
-            scope.launch {
-                try {
-                    val plan = DisplayController.currentPlan(this@OverlayService)
-                    withContext(Dispatchers.IO) { DisplayController.applyPlan(plan) }
-                    Toast.makeText(this@OverlayService, R.string.applied_overlay, Toast.LENGTH_SHORT).show()
-                    expanded = false
-                    collapse(view)
-                } catch (e: Exception) {
-                    Toast.makeText(this@OverlayService, e.message ?: "falha", Toast.LENGTH_LONG).show()
-                }
-            }
+            scope.launch { runDisplayAction(view, apply = true) }
         }
         view.findViewById<Button>(R.id.btnRestore).setOnClickListener {
-            scope.launch {
-                try {
-                    withContext(Dispatchers.IO) { DisplayController.restore() }
-                    Toast.makeText(this@OverlayService, R.string.restored, Toast.LENGTH_SHORT).show()
-                } catch (e: Exception) {
-                    Toast.makeText(this@OverlayService, e.message ?: "falha", Toast.LENGTH_LONG).show()
-                }
-            }
+            scope.launch { runDisplayAction(view, apply = false) }
         }
         refreshPlan()
+    }
+
+    private suspend fun runDisplayAction(view: View, apply: Boolean) {
+        try {
+            if (!ShellExecutor.awaitReady()) {
+                Toast.makeText(this, R.string.need_shell, Toast.LENGTH_LONG).show()
+                return
+            }
+            withContext(Dispatchers.IO) {
+                if (apply) DisplayController.applyPlan(DisplayController.currentPlan(this@OverlayService))
+                else DisplayController.restore()
+            }
+            Toast.makeText(
+                this,
+                if (apply) R.string.applied_overlay else R.string.restored,
+                Toast.LENGTH_SHORT
+            ).show()
+            if (apply) {
+                expanded = false
+                collapse(view)
+            }
+        } catch (e: Exception) {
+            Toast.makeText(this, e.message ?: "falha", Toast.LENGTH_LONG).show()
+        }
     }
 
     private fun expand(view: View) {

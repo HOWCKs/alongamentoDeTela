@@ -61,7 +61,7 @@
     <string name="open_with_overlay">Abrir jogo com flutuante</string>
     <string name="games_hint">1. Toque no jogo.\n2. Abrir com flutuante.\n3. No jogo, na orientação certa (deitado se for paisagem), bolha → Aplicar.</string>
     <string name="session_started">Bolha no ar. O jogo abre em seguida. Toque a bolha vermelha → Aplicar.</string>
-    <string name="need_shell">Autorize o Shizuku na aba Ativação.</string>
+    <string name="need_shell">Shizuku não respondeu neste momento. Abra o Shizuku, confira o interruptor deste app e volte na bolha para Aplicar.</string>
     <string name="need_game">Escolha um jogo na lista primeiro.</string>
     <string name="need_overlay">Autorize “exibir sobre outros apps” para a bolha aparecer no jogo.</string>
     <string name="overlay_title">PAINEL DE TELA</string>
