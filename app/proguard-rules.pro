@@ -1,0 +1,5 @@
+-keep class br.com.alongamento.tela.shell.ShellUserService { *; }
+-keep class br.com.alongamento.tela.IShellService { *; }
+-keep class rikka.shizuku.** { *; }
+-dontwarn org.bouncycastle.**
+-dontwarn org.conscrypt.**

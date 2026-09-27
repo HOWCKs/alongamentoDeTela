@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_stretch" android:icon="@drawable/ic_stretch" android:title="@string/nav_home" />
+    <item android:id="@+id/nav_hub" android:icon="@drawable/ic_hub" android:title="@string/nav_hub" />
+    <item android:id="@+id/nav_games" android:icon="@drawable/ic_games" android:title="@string/nav_games" />
+    <item android:id="@+id/nav_activation" android:icon="@drawable/ic_key" android:title="@string/nav_activation" />
+    <item android:id="@+id/nav_settings" android:icon="@drawable/ic_tune" android:title="@string/nav_settings" />
+</menu>
