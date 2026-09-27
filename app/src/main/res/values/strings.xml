@@ -19,7 +19,7 @@
     <string name="backend_none">Shizuku ainda não autorizado · abra Ativação</string>
     <string name="current_size">Agora: %1$s · %2$s</string>
     <string name="applied">Alongamento aplicado. O jogo não foi modificado.</string>
-    <string name="applied_overlay">wm size aplicado. O jogo reinicia para pegar a nova proporção. DPI original.</string>
+    <string name="applied_overlay">Alongamento aplicado no display. O jogo não foi fechado. Se ele piscar, a resolução é reaplicada sozinha.</string>
     <string name="restored">Tela original restaurada.</string>
     <string name="safety_tick">Tela ok? Mantém em %1$d s…</string>
     <string name="safety_keep">Manter alongamento</string>
@@ -28,7 +28,7 @@
     <string name="safety_body">Se a imagem ficar cortada ou o toque falhar, desfazemos sozinhos. Nada do jogo é alterado — só a resolução do sistema.</string>
     <string name="no_game">Nenhum jogo escolhido. Toque em um da lista.</string>
     <string name="no_game_home">1. Aba Jogos → escolha o título.\n2. Volte e toque em Abrir com flutuante.\nO alongamento só vale com a bolha por cima do jogo.</string>
-    <string name="home_game">Jogo: %1$s\n1. Alongar ou Corte, fator 1,10x.\n2. Abrir com flutuante — aplica wm size, fecha e reabre o jogo.\n3. Ou bolha → Aplicar (o título reinicia para pegar a nova proporção).</string>
+    <string name="home_game">Jogo: %1$s\n1. Alongar, ~1,10x.\n2. Abrir com flutuante (não alonga ainda).\n3. Com o jogo na tela, bolha → Aplicar. Se o título resetar a tela, reaplicamos o wm size sozinhos.</string>
     <string name="selected_game">Selecionado: %1$s\n%2$s</string>
     <string name="game_picked">Jogo: %1$s</string>
     <string name="need_usage">Autorize o acesso ao uso para o automático por jogo.</string>
@@ -60,7 +60,7 @@
     <string name="hint_corte">Corte: o mesmo eixo longo desce (1080×2340 → 1080×2126 em 1,10x). Laterais cortadas, altura igual. Não é DPI.</string>
     <string name="open_with_overlay">Abrir jogo com flutuante</string>
     <string name="games_hint">1. Toque no jogo.\n2. Abrir com flutuante.\n3. No jogo, na orientação certa (deitado se for paisagem), bolha → Aplicar.</string>
-    <string name="session_started">Bolha no ar. Aplicando wm size e reabrindo o jogo…</string>
+    <string name="session_started">Bolha no ar. Espere o jogo abrir deitado, toque a bolha → Alongar → Aplicar. Não fechamos o título.</string>
     <string name="need_shell">Shizuku não respondeu neste momento. Abra o Shizuku, confira o interruptor deste app e volte na bolha para Aplicar.</string>
     <string name="need_game">Escolha um jogo na lista primeiro.</string>
     <string name="need_overlay">Autorize “exibir sobre outros apps” para a bolha aparecer no jogo.</string>

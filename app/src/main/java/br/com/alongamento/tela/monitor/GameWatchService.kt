@@ -23,9 +23,8 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class GameWatchService : Service() {
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private var job: Job? = null
-    private var applied = false
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -33,7 +32,6 @@ class GameWatchService : Service() {
         if (intent?.action == ACTION_RESTORE) {
             scope.launch {
                 runCatching { DisplayController.restore() }
-                applied = false
                 stopSelf()
             }
             return START_NOT_STICKY
@@ -77,7 +75,18 @@ class GameWatchService : Service() {
     }
 
     private suspend fun loop() {
-        while (scope.isActive) delay(5000)
+        var idle = 0
+        while (scope.isActive) {
+            if (AppPrefs.stretched) {
+                runCatching { DisplayController.reholdIfDropped() }
+                idle = 0
+            } else {
+                idle++
+                if (idle > 30) break
+            }
+            delay(2000)
+        }
+        stopSelf()
     }
 
     companion object {

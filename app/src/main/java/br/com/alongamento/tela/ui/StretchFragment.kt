@@ -18,9 +18,7 @@ import br.com.alongamento.tela.shell.ShellBackend
 import br.com.alongamento.tela.shell.ShellExecutor
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.slider.Slider
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class StretchFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -96,16 +94,6 @@ class StretchFragment : Fragment() {
         when (val r = GameSession.prepare(requireContext())) {
             SessionStart.Ok -> {
                 toast(getString(R.string.session_started))
-                viewLifecycleOwner.lifecycleScope.launch {
-                    try {
-                        val ctx = requireContext().applicationContext
-                        withContext(Dispatchers.IO) {
-                            DisplayController.applyPlan(ctx, DisplayController.currentPlan(ctx))
-                        }
-                    } catch (e: Exception) {
-                        toast(e.message ?: "falha")
-                    }
-                }
             }
             SessionStart.NeedShell -> toast(getString(R.string.need_shell))
             SessionStart.NeedGame -> toast(getString(R.string.need_game))
