@@ -62,6 +62,7 @@ object DisplayController {
         runCatching { ShellExecutor.exec("wm density reset") }
         runCatching { ShellExecutor.exec("wm overscan 0,0,0,0") }
         runCatching { ShellExecutor.exec("wm scaling auto") }
+        runCatching { GameCompat.applyForSelected() }
         pushSize(w, h)
         delay(150)
         pushSize(w, h)
@@ -96,6 +97,7 @@ object DisplayController {
     suspend fun restore() {
         AppPrefs.stretched = false
         AppPrefs.flush()
+        runCatching { GameCompat.rollback() }
         runCatching { ShellExecutor.exec("wm overscan reset") }
         runCatching { ShellExecutor.exec("wm overscan 0,0,0,0") }
         runCatching { ShellExecutor.exec("wm scaling auto") }

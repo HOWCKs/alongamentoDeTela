@@ -19,7 +19,7 @@
     <string name="backend_none">Shizuku ainda não autorizado · abra Ativação</string>
     <string name="current_size">Agora: %1$s · %2$s</string>
     <string name="applied">Alongamento aplicado. O jogo não foi modificado.</string>
-    <string name="applied_overlay">Alongamento aplicado no display. O jogo não foi fechado. Se ele piscar, a resolução é reaplicada sozinha.</string>
+    <string name="applied_overlay">Tela cheia no jogo (am compat) + wm size. Sem fechar o título. Se o UNITE ainda letterbox, gire o aparelho uma vez.</string>
     <string name="restored">Tela original restaurada.</string>
     <string name="safety_tick">Tela ok? Mantém em %1$d s…</string>
     <string name="safety_keep">Manter alongamento</string>
@@ -56,7 +56,7 @@
     <string name="label_proj">Projeção</string>
     <string name="mode_alongar">Alongar</string>
     <string name="mode_corte">Corte lateral</string>
-    <string name="hint_alongar">Alongar: altura física fixa, só o eixo longo sobe (1080×2340 → 1080×2574 em 1,10x). O compositor comprime a largura extra — estica na horizontal. DPI original.</string>
+    <string name="hint_alongar">Alongar: FORCE_RESIZE no pacote do jogo (tira letterbox) + eixo longo 1080×2574. AOSP não tem squash tipo GPU Full Panel.</string>
     <string name="hint_corte">Corte: o mesmo eixo longo desce (1080×2340 → 1080×2126 em 1,10x). Laterais cortadas, altura igual. Não é DPI.</string>
     <string name="open_with_overlay">Abrir jogo com flutuante</string>
     <string name="games_hint">1. Toque no jogo.\n2. Abrir com flutuante.\n3. No jogo, na orientação certa (deitado se for paisagem), bolha → Aplicar.</string>

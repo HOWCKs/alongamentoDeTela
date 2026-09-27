@@ -76,6 +76,10 @@ object AppPrefs {
         get() = p.getString("hub_profile", HubProfile.BALANCED.name) ?: HubProfile.BALANCED.name
         set(v) { p.edit().putString("hub_profile", v).apply() }
 
+    var compatPackage: String
+        get() = p.getString("compat_pkg", "") ?: ""
+        set(v) { p.edit().putString("compat_pkg", v).apply() }
+
     fun flush() {
         p.edit()
             .putString("pkg", selectedPackage)
